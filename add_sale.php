@@ -3,9 +3,14 @@
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
    page_require_level(3);
-   if(isset($_SESSION['data_person'])) {
-        unset($_SESSION['data_person']);
-    }
+   $all_clients = find_all('client');
+   if(isset($_SESSION['productos'])) {
+        unset($_SESSION['productos']);
+   }
+
+   if(isset($_SESSION['num'])) {
+        unset($_SESSION['num']);
+   }
 ?>
 <?php
 
@@ -46,13 +51,30 @@
     <?php echo display_msg($msg); ?>
     <form method="post" action="ajax.php" autocomplete="off" id="sug-form">
         <div class="form-group">
-          <div class="input-group">
+            <div class="row">
+                <div class="col-md-6">
+                  <label for="qty">Nombre del Cliente</label>
+                  <select class="buscador" name="client-name">
+                    <option value="">Seleccione un cliente</option>
+                  <?php  foreach ($all_clients as $client): ?>
+                    <option value="<?php echo (int)$client['name'] ?>">
+                      <?php echo $client['name'] ?></option>
+                  <?php endforeach; ?>
+                  </select>
+                </div>
+            </div>
+
+            <br>
+
+            <label for="qty">Nombre del Producto</label>
+            <div class="input-group">
             <span class="input-group-btn">
               <button type="submit" class="btn btn-primary">Búsqueda</button>
             </span>
             <input type="text" id="sug_input" class="form-control" name="title"  placeholder="Buscar por el nombre del producto">
-         </div>
-         <div id="result" class="list-group"></div>
+            </div>
+            <div id="result" class="list-group"></div>
+
         </div>
     </form>
   </div>
@@ -75,12 +97,15 @@
             <th> Precio </th>
             <th> Cantidad </th>
             <th> IVA </th>
-            <th> Total </th>
+            <th> Subtotal </th>
             <th> Agregado</th>
-            <th> Acciones</th>
+
            </thead>
              <tbody  id="product_info"> </tbody>
          </table>
+         <div class="">
+
+         </div>
        </form>
       </div>
     </div>
@@ -89,3 +114,15 @@
 </div>
 
 <?php include_once('layouts/footer.php'); ?>
+<link rel="stylesheet" type="text/css" href="css/select2.css">
+<script src="js/select2.js"></script>
+<script>
+$(document).ready(function() {
+    $('.buscador').select2();
+});
+</script>
+<style media="screen">
+    select{
+        width: 300px;
+    }
+</style>

@@ -15,6 +15,18 @@
       <li><a href="users.php">Administrar usuarios</a> </li>
    </ul>
   </li>
+
+  <li>
+    <a href="#" class="submenu-toggle">
+      <i class="glyphicon glyphicon-thumbs-up"></i>
+      <span>Clientes</span>
+    </a>
+    <ul class="nav submenu">
+      <li><a href="client.php">Administrar clientes</a> </li>
+      <li><a href="add_client.php">Agregar clientes</a> </li>
+   </ul>
+  </li>
+
   <li>
     <a href="categorie.php" >
       <i class="glyphicon glyphicon-indent-left"></i>

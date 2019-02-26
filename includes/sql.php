@@ -147,6 +147,7 @@ function tableExists($table){
       $result = find_by_sql($sql);
       return $result;
   }
+
   /*--------------------------------------------------------------*/
   /* Function to update the last log in of a user
   /*--------------------------------------------------------------*/
@@ -219,6 +220,23 @@ function tableExists($table){
     return find_by_sql($sql);
 
    }
+
+   /*--------------------------------------------------------------*/
+   /* Function for Finding all client name
+   /* JOIN with categorie  and media database table
+   /*--------------------------------------------------------------*/
+  function show_client_table(){
+     global $db;
+     $sql  =" SELECT c.id,c.name,c.tel,c.email,c.media_id,c.date";
+     $sql  .=" ,m.file_name AS image";
+    $sql  .=" FROM client c";
+    $sql  .=" LEFT JOIN media m ON m.id = c.media_id";
+    $sql  .=" ORDER BY c.id ASC";
+    return find_by_sql($sql);
+
+   }
+
+
   /*--------------------------------------------------------------*/
   /* Function for Finding all product name
   /* Request coming from ajax.php for auto suggest

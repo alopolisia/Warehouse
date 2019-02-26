@@ -73,14 +73,6 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-md-6">
-                    <!--
-                    <select class="form-control" name="product-categorie">
-                      <option value="">Selecciona una categoría</option>
-                    <?php/*  foreach ($all_categories as $cat): ?>
-                      <option value="<?php echo (int)$cat['id'] ?>">
-                        <?php echo $cat['name'] ?></option>
-                    <?php endforeach; */?>
-                </select> -->
 
                     <select class="buscador" name="product-categorie">
                       <option value="">Selecciona una categoría</option>
@@ -142,7 +134,7 @@
 
 <?php include_once('layouts/footer.php'); ?>
 <link rel="stylesheet" type="text/css" href="css/select2.css">
-<script src="js/jquery-3.1.1.min.js"></script>
+<!-- <script src="js/jquery-3.1.1.min.js"></script> -->
 <script src="js/select2.js"></script>
 <script>
 $(document).ready(function() {

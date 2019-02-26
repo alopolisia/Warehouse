@@ -250,6 +250,7 @@ table tfoot tr td:first-child{
   -moz-box-shadow: none;
   box-shadow: none;
 }
+
 .btn{
   border-radius: 3px;
   -webkit-transition: all 300ms ease-in-out;

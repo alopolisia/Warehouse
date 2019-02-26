@@ -68,14 +68,29 @@ function suggetion() {
   });
   function total(){
     $('#product_info input').change(function(e)  {
-            var price = +$('input[name=price]').val() || 0;
-            var qty   = +$('input[name=quantity]').val() || 0;
-            var iva = price * 0.16 * qty;
-            var total = qty * price + iva;
-                $('input[name=iva]').val(iva.toFixed(2));
-                $('input[name=total]').val(total.toFixed(2));
+            var i = 1;
+            var tt = 0;
+
+            while (true) {
+                var price = +$('input[name=price' + i + ']').val() || 0;
+                var qty   = +$('input[name=quantity' + i + ']').val() || 0;
+                var iva = price * 0.16 * qty;
+                var total = qty * price + iva;
+                $('input[name=iva' + i + ']').val(iva.toFixed(2));
+                $('input[name=total' + i + ']').val(total.toFixed(2));
+                tt += total;
+                i++;
+
+                if(price == 0){
+                    break;
+                }
+            }
+            $('input[name=total]').val(tt);
+
+
     });
   }
+
 
   $(document).ready(function() {
 
