@@ -8,36 +8,70 @@
         unset($_SESSION['productos']);
    }
 
+   /*
    if(isset($_SESSION['num'])) {
         unset($_SESSION['num']);
-   }
+   }*/
 ?>
 <?php
 
   if(isset($_POST['add_sale'])){
-    $req_fields = array('s_id','quantity','price','total', 'date' );
-    validate_fields($req_fields);
+      echo "puto";
+    //$req_fields = array('s_id','quantity','price','total', 'date' );
+    //validate_fields($req_fields);
         if(empty($errors)){
-          $p_id      = $db->escape((int)$_POST['s_id']);
-          $s_qty     = $db->escape((int)$_POST['quantity']);
-          $s_total   = $db->escape($_POST['total']);
+          $cliente = $_SESSION['cliente'];
+
+
+          $c_id = find_client_by_name($cliente)['id'];
+          echo $cliente;
+          $t = $_POST['total'];
+
           $date      = $db->escape($_POST['date']);
           $s_date    = make_date();
 
-          $sql  = "INSERT INTO sales (";
-          $sql .= " product_id,qty,price,date";
+          $sql  = "INSERT INTO ticket (";
+          $sql .= " id_client,total,date";
           $sql .= ") VALUES (";
-          $sql .= "'{$p_id}','{$s_qty}','{$s_total}','{$s_date}'";
+          $sql .= "'{$c_id}','{$t}','{$s_date}'";
           $sql .= ")";
+          $db->query($sql);
 
-                if($db->query($sql)){
-                  update_product_qty($s_qty,$p_id);
-                  $session->msg('s',"Venta agregada ");
-                  redirect('add_sale.php', false);
-                } else {
-                  $session->msg('d','Lo siento, registro falló.');
-                  redirect('add_sale.php', false);
-                }
+
+          $id_ticket = find_max_id('sales')['maximo'];
+
+          for ($i=1; $i <$_SESSION['num'] ; $i++) {
+              $p_id      = $db->escape((int)$_POST['s_id'.$i]);
+              $s_qty     = $db->escape((int)$_POST['quantity'.$i]);
+              $s_total   = $db->escape($_POST['total'.$i]);
+              $date      = $db->escape($_POST['date']);
+              $s_date    = make_date();
+
+              $sql  = "INSERT INTO sales (";
+              $sql .= " product_id,qty,price,date, id_ticket";
+              $sql .= ") VALUES (";
+              $sql .= "'{$p_id}','{$s_qty}','{$s_total}','{$s_date}','{$id_ticket}'";
+              $sql .= ")";
+
+              $db->query($sql);
+              update_product_qty($s_qty,$p_id);
+          }
+          unset($_SESSION['num']);
+          unset($_SESSION['cliente']);
+          $session->msg('s',"Venta agregada ");
+          redirect('add_sale.php', false);
+
+          /*
+            if($db->query($sql)){
+              update_product_qty($s_qty,$p_id);
+              $session->msg('s',"Venta agregada ");
+              redirect('add_sale.php', false);
+            } else {
+              $session->msg('d','Lo siento, registro falló.');
+              redirect('add_sale.php', false);
+            }
+          */
+
         } else {
            $session->msg("d", $errors);
            redirect('add_sale.php',false);
@@ -54,10 +88,10 @@
             <div class="row">
                 <div class="col-md-6">
                   <label for="qty">Nombre del Cliente</label>
-                  <select class="buscador" name="client-name">
+                  <select class="form-control" id="select_cliente" name="client-name">
                     <option value="">Seleccione un cliente</option>
                   <?php  foreach ($all_clients as $client): ?>
-                    <option value="<?php echo (int)$client['name'] ?>">
+                    <option value="<?php $client['name'] ?>">
                       <?php echo $client['name'] ?></option>
                   <?php endforeach; ?>
                   </select>
@@ -118,7 +152,7 @@
 <script src="js/select2.js"></script>
 <script>
 $(document).ready(function() {
-    $('.buscador').select2();
+    $('.form-control').select2();
 });
 </script>
 <style media="screen">

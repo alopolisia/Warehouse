@@ -6,6 +6,7 @@
 ?>
 <?php
 $sales = find_all_sale();
+$tickets = find_all_ticket();
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
@@ -30,27 +31,26 @@ $sales = find_all_sale();
             <thead>
               <tr>
                 <th class="text-center" style="width: 50px;">#</th>
-                <th> Nombre del producto </th>
-                <th class="text-center" style="width: 15%;"> Cantidad</th>
+                <th> Nombre del cliente </th>
+
                 <th class="text-center" style="width: 15%;"> Total </th>
                 <th class="text-center" style="width: 15%;"> Fecha </th>
                 <th class="text-center" style="width: 100px;"> Acciones </th>
              </tr>
             </thead>
            <tbody>
-             <?php foreach ($sales as $sale):?>
+             <?php foreach ($tickets as $ticket):?>
              <tr>
                <td class="text-center"><?php echo count_id();?></td>
-               <td><?php echo remove_junk($sale['name']); ?></td>
-               <td class="text-center"><?php echo (int)$sale['qty']; ?></td>
-               <td class="text-center"><?php echo remove_junk($sale['price']); ?></td>
-               <td class="text-center"><?php echo $sale['date']; ?></td>
+               <td><?php echo remove_junk($ticket['name']); ?></td>
+               <td class="text-center"><?php echo (float)$ticket['total']; ?></td>
+               <td class="text-center"><?php echo $ticket['date']; ?></td>
                <td class="text-center">
                   <div class="btn-group">
                      <a href="edit_sale.php?id=<?php echo (int)$sale['id'];?>" class="btn btn-warning btn-xs"  title="Edit" data-toggle="tooltip">
                        <span class="glyphicon glyphicon-edit"></span>
                      </a>
-                     <a href="delete_sale.php?id=<?php echo (int)$sale['id'];?>" class="btn btn-danger btn-xs"  title="Delete" data-toggle="tooltip">
+                     <a href="delete_sale.php?id=<?php echo (int)$ticket['id_ticket'];?>" class="btn btn-danger btn-xs"  title="Delete" data-toggle="tooltip">
                        <span class="glyphicon glyphicon-trash"></span>
                      </a>
                   </div>

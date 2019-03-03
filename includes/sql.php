@@ -11,6 +11,34 @@ function find_all($table) {
      return find_by_sql("SELECT * FROM ".$db->escape($table));
    }
 }
+
+/*--------------------------------------------------------------*/
+/* Function for find all database table rows by table name
+/*--------------------------------------------------------------*/
+function find_max_id($table) {
+   global $db;
+   if(tableExists($table))
+   {
+       $sql = "SELECT max(id_ticket) as maximo FROM `ticket`";
+       $result = $db->query($sql);
+       return($db->fetch_assoc($result));
+   }
+}
+
+/*--------------------------------------------------------------*/
+/* Function for find all database table rows by table name
+/*--------------------------------------------------------------*/
+function find_client_by_name($nombre) {
+   global $db;
+   $table = "client";
+   if(tableExists($table))
+   {
+       $sql = "SELECT `id` as id FROM `client` WHERE `name` = '{$nombre}'";
+       $result = $db->query($sql);
+       return($db->fetch_assoc($result));
+   }
+}
+
 /*--------------------------------------------------------------*/
 /* Function for Perform queries
 /*--------------------------------------------------------------*/
@@ -36,6 +64,19 @@ function find_by_id($table,$id)
             return null;
      }
 }
+
+function find_by_id_ticket($table,$id)
+{
+  global $db;
+  $id = (int)$id;
+    if(tableExists($table)){
+          $sql = $db->query("SELECT * FROM {$db->escape($table)} WHERE id_ticket='{$db->escape($id)}' LIMIT 1");
+          if($result = $db->fetch_assoc($sql))
+            return $result;
+          else
+            return null;
+     }
+}
 /*--------------------------------------------------------------*/
 /* Function for Delete data from table by id
 /*--------------------------------------------------------------*/
@@ -46,6 +87,19 @@ function delete_by_id($table,$id)
    {
     $sql = "DELETE FROM ".$db->escape($table);
     $sql .= " WHERE id=". $db->escape($id);
+    $sql .= " LIMIT 1";
+    $db->query($sql);
+    return ($db->affected_rows() === 1) ? true : false;
+   }
+}
+
+function delete_ticket_by_id($table,$id)
+{
+  global $db;
+  if(tableExists($table))
+   {
+    $sql = "DELETE FROM ".$db->escape($table);
+    $sql .= " WHERE id_ticket=". $db->escape($id);
     $sql .= " LIMIT 1";
     $db->query($sql);
     return ($db->affected_rows() === 1) ? true : false;
@@ -309,6 +363,20 @@ function tableExists($table){
    $sql .= " ORDER BY s.date DESC";
    return find_by_sql($sql);
  }
+
+ /*--------------------------------------------------------------*/
+ /* Function for find all sales
+ /*--------------------------------------------------------------*/
+ function find_all_ticket(){
+   global $db;
+   $sql  = "SELECT t.id_ticket,t.id_client,t.total,t.date,c.name";
+   $sql .= " FROM ticket t";
+   $sql .= " LEFT JOIN client c ON t.id_client = c.id";
+   $sql .= " ORDER BY t.id_ticket DESC";
+   return find_by_sql($sql);
+ }
+
+
  /*--------------------------------------------------------------*/
  /* Function for Display Recent sale
  /*--------------------------------------------------------------*/

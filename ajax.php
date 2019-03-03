@@ -26,16 +26,24 @@
 
       echo json_encode($html);
    }
+
+   $_SESSION['cliente'] = "Pancho Lopez Villa";
+   if (isset($_POST['client-name']) && strlen($_POST['p_name'])) {
+       // code...
+       $_SESSION['cliente'] .= $_POST['client-name'];
+   }
 ?>
 
  <?php
  $iva = 0.16;
  $bo = 0;
  $mensaje = '';
+ $s0 = "s_id";
  $s1 = "price";
  $s2 = "quantity";
  $s3 = "iva";
  $s4 = "total";
+ $_SESSION['saber_cual'] = 0;
  // find all product
   if(isset($_POST['p_name']) && strlen($_POST['p_name']))
   {
@@ -51,7 +59,7 @@
           $html .= "<tr>";
 
           $html .= "<td id=\"s_name\">".$result['name']."</td>";
-          $html .= "<input type=\"hidden\" name=\"s_id\" value=\"{$result['id']}\">";
+          $html .= "<input type=\"hidden\" name=\"{$s0}{$_SESSION['num']}\" value=\"{$result['id']}\">";
           $html .= "<input type=\"hidden\" name=\"comodin\" value=\"{$_SESSION['num']}\">";
           $html  .= "<td>";
           //$html  .= "<input type=\"text\" class=\"form-control\" name=\"{$s1}{$_SESSION['num']}\"value=\"{$result['sale_price']}\">";
@@ -89,6 +97,7 @@
             for ($i=0; $i <count($_SESSION['productos']) ; $i++) {
                 if (in_array($product_title, $_SESSION['productos'][$i])) {
                     $bo = 1;
+                    $_SESSION['saber_cual'] = $i;
                     //$_SESSION['bo'] = 1;
                     break;
                 }
@@ -98,6 +107,10 @@
                 $_SESSION['productos'][$_SESSION['cont']] = array('nombre' => $product_title, 'contenido' => $html);
                 $_SESSION['cont'] += 1;
                 $_SESSION['num'] += 1;
+            } else {
+                $m1 = $_SESSION['productos'][$_SESSION['saber_cual']]['contenido'];
+                $pos = strpos($m1, "$s2", 1);
+                $m2 = substr($m1, $pos,10)."<br>";
             }
 
             for ($i=0; $i <count($_SESSION['productos']) ; $i++) {

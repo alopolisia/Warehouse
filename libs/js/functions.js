@@ -43,9 +43,12 @@ function suggetion() {
      });
 
  }
+
+
   $('#sug-form').submit(function(e) {
       var formData = {
-          'p_name' : $('input[name=title]').val()
+          'p_name' : $('input[name=title]').val(),
+          'client-name' : $('#select_cliente option:selected').val()
       };
         // process the form
         $.ajax({
